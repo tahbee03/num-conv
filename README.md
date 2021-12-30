@@ -1,5 +1,5 @@
 # Number Converter
-_Based on HM2 project from Introduction to Computing course._
+_Based on [HM2 project](https://github.com/TahBee03/HM2) from Introduction to Computing course._
 
 **Description:** The purpose of this program is to take a number input by the user and return the corresponding value based on the selected number system. The file `NC_main.cpp` contains the bulk of the program, containing code that controls the duration of the program execution and prints the various menus. The file `NC_functions.hpp` contains the definitions of the functions responsible for carrying out the number conversions.
 
