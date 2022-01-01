@@ -10,7 +10,7 @@ FILE: NC_main.cpp
 #include "NC_functions.hpp"
 using namespace std;
 
-const int windowWidth = 50; //Sets the width of the "window" of the program. Used in FOR loops where "=" is printed.
+const int windowWidth = 50; // Sets the width of the "window" of the program. Used in FOR loops where "=" is printed
 
 void PrintSeparator() {
 
@@ -18,36 +18,42 @@ void PrintSeparator() {
 
 }
 
-void PrintHeader(int t, int sb = 0) {
+void PrintHeader(int t, int sb = 0, int tb = 0) {
 
 	switch(t) {
 		case 0: // Choosing source base
-			PrintSeparator(); // Prints the top row of the header.
+			PrintSeparator();
 			cout << endl;
 			for(int i = 1; i <= 12; i++) cout << "=";
 			cout << " Number System Conversion ";
 			for(int i = 39; i <= windowWidth; i++) cout << "=";
 			cout << endl;
-			PrintSeparator(); // Prints the bottom row of the header.
+			PrintSeparator();
 			break;
 		case 1: // Choosing target base; needs source base (sb)
-			PrintSeparator(); // Prints the top row of the header.
+			PrintSeparator();
 			cout << endl;
 			cout << "Source Number System: " << sb << " ";
 			cout << setfill('=');
 			int tempWidth;
 			(sb >= 10) ? tempWidth = 25 : tempWidth = 26;
 			cout << setw(tempWidth) << "" << setfill(' ') << endl;
-			PrintSeparator(); // Prints the bottom row of the header.
+			PrintSeparator();
 			break;
-
-
-
-
-
-
-
-
+		case 2: // Conversion window; needs source base (sb) and target base (tb)
+			PrintSeparator();
+			cout << endl;
+			cout << "Source Number System: " << sb << ", Target Number System: " << tb << endl;
+			PrintSeparator();
+			break;
+		case 3: // Confirm close window
+			PrintSeparator();
+			cout << endl;
+			for(int i = 1; i <= 17; i++) cout << "=";
+			cout << " Confirm  Close ";
+			for(int i = 34; i <= windowWidth; i++) cout << "=";
+			cout << endl;
+			PrintSeparator();
 
 	}
 
@@ -55,34 +61,30 @@ void PrintHeader(int t, int sb = 0) {
 
 int main() {
 
-	bool runProgram = true; //Controls whether or not the main program will continue running.
-	bool confirmQuit = false; //Controls whether or not the user prompts to exit the program.
-	char yesOrNo; //Holds the user's 'Y' and 'N' inputs.
-
 	/* The following WHILE loop controls the processes of the entire program. If the user chooses to exit the program,
 	runProgram will be false, the computer will break out of the WHILE loop, and the program will be terminated. */
-	while(runProgram) {
+	while(true) {
 
-		int sourceBase = 0; // Holds the value of the source number system base. Used as the base in the conversion FOR loops.
-		int targetBase = 0; // Holds the value of the target number system base.
-		const string wordList[] = {"", "", "binary", "ternary", "quaternary", "quinary", "senary", "septenary", "octal", "nonary", "decimal",
-		                     "", "", "", "", "", "hexadecimal"};
+		int sourceBase = 0; // Holds the value of the source number system base
+		int targetBase = 0; // Holds the value of the target number system base
+		const string wordList[] = {"", "", "Binary", "Ternary", "Quaternary", "Quinary", "Senary", "Septenary", "Octal", "Nonary", "Decimal",
+		                           "", "", "", "", "", "Hexadecimal"};
 
 		/* The following DO-WHILE loop prints out the main menu and executes the main program as long as the user inputs valid values. */
 		do {
 
-			string sourceNum = " "; //Holds the value of the source number.
-			long long targetNum = 0; //Holds the value of the target number.
-			string targetNumStr; //Holds the value of the target number (for decimal-to-hexadecimal conversion only).
+			string sourceNum = " "; // Holds the value of the source number
+			long long targetNum = 0; // Holds the value of the target number
+			string targetNumStr; // Holds the value of the target number (for decimal-to-hexadecimal conversion only)
 
-			/* MAIN MENU */
+			/* SOURCE NUMBER SYSTEM SELECTION */
 			PrintHeader(0);
 			cout << endl;
 			cout << "Choose your source number system:" << endl;
 
-			for(int i = 2; i <= 16; i++) { // Prints out the options for the main menu.
+			for(int i = 2; i <= 16; i++) { // Prints out the options for the main menu
 
-				if(i >= 11 && i <= 15) continue; // Bases 11-15 are not used in this program, so they are not printed.
+				if(i >= 11 && i <= 15) continue; // Bases 11-15 are not used in this program, so they are not printed
 				cout << "(" << i << ") " << wordList[i] << endl;
 
 			}
@@ -91,94 +93,55 @@ int main() {
 			cout << "(Input any other value to exit the program.)" << endl;
 			cout << "Enter number: ";
 			cin >> sourceBase;
-			PrintSeparator(); // Prints the bottom row of the window.
+			PrintSeparator(); // Prints the bottom row of the window
 			cout << endl << endl;
 
-			PrintHeader(1, sourceBase);
-			cout << endl;
+			if(sourceBase >= 2 && sourceBase <= 9) { // For source number systems 2-9 (base 2-9)
 
-			if(sourceBase >= 2 && sourceBase <= 9) { // For source number systems 2-9 (base 2-9).
-
-				/* CHOOSE TARGET NUMBER SYSTEM MENU */
+				/* TARGET NUMBER SYSTEM SELECTION */
+				PrintHeader(1, sourceBase);
+				cout << endl;
 				cout << "Choose your target number system: " << endl;
 				cout << "(10) decimal" << endl;
 				cout << endl;
 				cout << "(Input any other value to exit the program.)" << endl;
 				cout << "Enter number: ";
 				cin >> targetBase;
-				PrintSeparator(); // Prints the bottom row of the window.
+				PrintSeparator(); // Prints the bottom row of the window
 				cout << endl << endl;
 
-				if (targetBase != 10) { // If user inputs an invalid number, they will be prompted to exit the program.
-
-					confirmQuit = true;
-					break;
-
-				} else {
+				if(targetBase == 10) {
 
 					/* CONVERSION WINDOW */
-					PrintSeparator(); //Prints the top row of the header.
-
-					cout << endl;
-					cout << "Source Number System: " << sourceBase << ", Target Number System: " << targetBase << endl;
-
-					PrintSeparator(); //Prints the bottom row of the header.
-
+					PrintHeader(2, sourceBase, targetBase);
 					cout << endl;
 					cout << "Input your number in source number system:" << endl;
-
-					switch (sourceBase) {
-
-						case 2:
-							cout << "Binary: ";
-							break;
-						case 3:
-							cout << "Ternary: ";
-							break;
-						case 4:
-							cout << "Quaternary: ";
-							break;
-						case 5:
-							cout << "Quinary: ";
-							break;
-						case 6:
-							cout << "Senary: ";
-							break;
-						case 7:
-							cout << "Septenary: ";
-							break;
-						case 8:
-							cout << "Octal: ";
-							break;
-						case 9:
-							cout << "Nonary: ";
-							break;
-
-					}
-
+					cout << wordList[sourceBase] << ": ";
 					cin >> sourceNum;
 					targetNum = stoi(BasetoDec(sourceNum, sourceBase));
 					cout << "Decimal: " << targetNum << endl;
 					cout << "You will be returned to the main menu." << endl;
-
-					PrintSeparator(); //Prints the bottom row of the window.
-
+					PrintSeparator(); // Prints the bottom row of the window
 					cout << endl << endl;
+
+				} else { // If user inputs an invalid number, they will be prompted to exit the program
+
+					break;
 
 				}
 
-				continue;
-				/* End of base(2-9) to decimal conversion. Next iteration of
-				DO-WHILE loop starts; main menu is printed. */
+				// End of base(2-9) to decimal conversion
 
-			} else if(sourceBase == 10) { // For source number system 10 (decimal).
+			} else if(sourceBase == 10) { // For source number system 10 (decimal)
 
-				/* CHOOSE TARGET NUMBER SYSTEM MENU */
+				/* TARGET NUMBER SYSTEM SELECTION */
+				PrintHeader(1, sourceBase);
+				cout << endl;
 				cout << "Choose your target number system: " << endl;
 
-				for(int i = 2; i <= 16; i++) { // Prints out the options for the target number system selection menu.
+				for(int i = 2; i <= 16; i++) { // Prints out the options for the target number system selection menu
 
-					if (i >= 10 && i <= 15) continue; // Bases 10-15 are not used here, so they are not printed.
+					if (i >= 10 && i <= 15) continue; // Bases 10-15 are not used here, so they are not printed
 					cout << "(" << i << ") " << wordList[i] << endl;
 
 				}
@@ -187,25 +150,28 @@ int main() {
 				cout << "(Input any other value to exit the program.)" << endl;
 				cout << "Enter number: ";
 				cin >> targetBase;
-				PrintSeparator(); //Prints the bottom row of the window.
+				PrintSeparator(); // Prints the bottom row of the window
 				cout << endl << endl;
 
-				if ((targetBase < 2) || ((targetBase > 9) && (targetBase != 16))) { //If user inputs an invalid number, they will be prompted to exit the program.
+				/* FIX!
+				if(targetBase >= 2 && targetBase <= 9) {
+					PrintHeader(2, sourceBase, targetBase);
+					cout << endl;
+					cout << "Input your number in source number system:" << endl;
+					cout << "Decimal: ";
+					cin >> sourceNum;
+					
+				}
+				*/
 
-					confirmQuit = true;
+				if ((targetBase < 2) || ((targetBase > 9) && (targetBase != 16))) { // If user inputs an invalid number, they will be prompted to exit the program
+
 					break;
 
 				} else {
 
 					/* CONVERSION WINDOW */
-					PrintSeparator(); //Prints the top row of the header.
-					
-					cout << endl;
-					cout << "Source Number System: " << sourceBase << ", Target Number System: " << targetBase;
-					cout << endl;
-
-					PrintSeparator(); //Prints the bottom row of the header.
-
+					PrintHeader(2, sourceBase, targetBase);
 					cout << endl;
 					cout << "Input your number in source number system:" << endl;
 					cout << "Decimal: ";
@@ -268,52 +234,29 @@ int main() {
 				/* End of decimal to base (2-9)/decimal to hexadecimal conversion. Next iteration of
 				DO-WHILE loop starts; main menu is printed. */
 
-			} else if (sourceBase == 16) { //For source number system 16 (hexadecimal).
+			} else if(sourceBase == 16) { // For source number system 16 (hexadecimal)
 
-				/* CHOOSE TARGET NUMBER SYSTEM MENU */
-				/*
-				PrintSeparator(); //Prints the top row of the header.
-
+				/* TARGET NUMBER SYSTEM SELECTION */
+				PrintHeader(1, sourceBase);
 				cout << endl;
-				cout << "Source Number System: " << sourceBase << " ";
-
-				for (int i = 26; i <= windowWidth; i++) {
-
-					cout << "=";
-
-				}
-
-				cout << endl;
-
-				PrintSeparator(); //Prints the bottom row of the header.
-
-				cout << endl;
-				*/
 				cout << "Choose your target number system: " << endl;
 				cout << "(8) octal" << endl;
 				cout << "(10) decimal" << endl;
-				cout << "Input any other value to exit the program." << endl;
+				cout << endl;
+				cout << "(Input any other value to exit the program.)" << endl;
+				cout << "Enter number: ";
 				cin >> targetBase;
-
-				PrintSeparator(); //Prints the bottom row of the window.
-
+				PrintSeparator(); // Prints the bottom row of the window
 				cout << endl << endl;
 
-				if ((targetBase != 8) && (targetBase != 10)) { //If user inputs an invalid number, they will be prompted to exit the program.
+				if ((targetBase != 8) && (targetBase != 10)) { // If user inputs an invalid number, they will be prompted to exit the program
 
-					confirmQuit = true;
 					break;
 
 				} else {
 
 					/* CONVERSION WINDOW */
-					PrintSeparator(); //Prints the top row of the header.
-
-					cout << endl;
-					cout << "Source Number System: " << sourceBase << ", Target Number System: " << targetBase << endl;
-
-					PrintSeparator(); //Prints the bottom row of the header.
-
+					PrintHeader(2, sourceBase, targetBase);
 					cout << endl;
 					cout << "Input your number in source number system:" << endl;
 					cout << "Hexadecimal: ";
@@ -526,73 +469,42 @@ int main() {
 				/* End of hexadecimal to octal/hexadecimal to decimal conversion. Next iteration of
 				DO-WHILE loop starts; main menu is printed. */
 
-			} else { //If user inputs an invalid number, they will be prompted to exit the program.
+			} else { // If user inputs an invalid number, they will be prompted to exit the program
 
-				confirmQuit = true;
+				break;
 
 			}
 
-		} while (!confirmQuit);
+		} while(true);
 
 		/* CONFIRM CLOSE WINDOW */
-		if (confirmQuit) {
+		char yesOrNo; // Holds the user's 'Y' and 'N' inputs
 
-			PrintSeparator(); //Prints the top row of the header.
+		PrintHeader(3);
+		cout << endl;
+		cout << "Are you sure you want to quit the program? (Y/N)" << endl;
+		cin >> yesOrNo;
 
-			cout << endl;
+		if(yesOrNo == 'Y' || yesOrNo == 'y') {
 
-			for (int i = 1; i <= 17; i++) {
+			cout << "Bye!" << endl;
+			PrintSeparator(); // Prints the bottom row of the window
+			cout << endl << endl;
+			break; // The program ends at this point
 
-				cout << "=";
+		} else {
 
-			}
+			cout << "You will be returned to the main menu." << endl;
+			PrintSeparator(); // Prints the bottom row of the window
+			cout << endl << endl;
 
-			cout << " Confirm  Close ";
-
-			for (int i = 34; i <= windowWidth; i++) {
-
-				cout << "=";
-
-			}
-
-			cout << endl;
-
-			PrintSeparator(); //Prints the bottom row of the header.
-
-			cout << endl;
-			cout << "Are you sure you want to quit the program? (Y/N)" << endl;
-			cin >> yesOrNo;
-
-			if (yesOrNo == 'Y') {
-
-				cout << "Bye!" << endl;
-				PrintSeparator(); //Prints the bottom row of the window.
-				
-				cout << endl;
-
-				runProgram = false;
-
-				/* The program ends at this point. */
-
-
-			} else {
-
-				cout << "You will be returned to the main menu." << endl;
-				PrintSeparator(); //Prints the bottom row of the window.
-				
-				cout << endl << endl;
-
-				confirmQuit = false;
-
-				/* The program returns to the main DO-WHILE loop
-				and prints out the main menu. */
-
-			}
+			// The program returns to the DO-WHILE loop
 
 		}
 
 	}
 
+	
 	return 0;
 
 }
