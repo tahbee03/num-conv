@@ -21,7 +21,7 @@ int main() {
 			string sourceNum; // Holds the value of the source number
 			string targetNum; // Holds the value of the target number
 
-			/* SOURCE NUMBER SYSTEM SELECTION */
+			// SOURCE NUMBER SYSTEM SELECTION
 			PrintHeader(0);
 			cout << endl;
 			cout << "Choose your source number system:" << endl;
@@ -42,7 +42,7 @@ int main() {
 
 			if(sourceBase >= 2 && sourceBase <= 9) { // For source number systems 2-9 (base 2-9)
 
-				/* TARGET NUMBER SYSTEM SELECTION */
+				// TARGET NUMBER SYSTEM SELECTION
 				PrintHeader(1, sourceBase);
 				cout << endl;
 				cout << "Choose your target number system: " << endl;
@@ -56,7 +56,7 @@ int main() {
 
 				if(targetBase == 10) {
 
-					/* CONVERSION WINDOW */
+					// CONVERSION WINDOW
 					PrintHeader(2, sourceBase, targetBase);
 					cout << endl;
 					cout << "Input your number in source number system:" << endl;
@@ -78,7 +78,7 @@ int main() {
 
 			} else if(sourceBase == 10) { // For source number system 10 (decimal)
 
-				/* TARGET NUMBER SYSTEM SELECTION */
+				// TARGET NUMBER SYSTEM SELECTION
 				PrintHeader(1, sourceBase);
 				cout << endl;
 				cout << "Choose your target number system: " << endl;
@@ -100,7 +100,7 @@ int main() {
 			
 				if(targetBase >= 2 && targetBase <= 9) { // Decimal-to-base(2-9) conversion
 					
-					/* CONVERSION WINDOW */
+					// CONVERSION WINDOW
 					PrintHeader(2, sourceBase, targetBase);
 					cout << endl;
 					cout << "Input your number in source number system:" << endl;
@@ -116,7 +116,7 @@ int main() {
 					
 				} else if(targetBase == 16) { // Decimal-to-hexadecimal conversion
 
-					/* CONVERSION WINDOW */
+					// CONVERSION WINDOW
 					PrintHeader(2, sourceBase, targetBase);
 					cout << endl;
 					cout << "Input your number in source number system:" << endl;
@@ -138,7 +138,7 @@ int main() {
 
 			} else if(sourceBase == 16) { // For source number system 16 (hexadecimal)
 
-				/* TARGET NUMBER SYSTEM SELECTION */
+				// TARGET NUMBER SYSTEM SELECTION
 				PrintHeader(1, sourceBase);
 				cout << endl;
 				cout << "Choose your target number system: " << endl;
@@ -153,7 +153,7 @@ int main() {
 
 				if(targetBase == 10) { // Hexadecimal-to-decimal conversion
 
-					/* CONVERSION WINDOW */
+					// CONVERSION WINDOW
 					PrintHeader(2, sourceBase, targetBase);
 					cout << endl;
 					cout << "Input your number in source number system:" << endl;
@@ -181,7 +181,7 @@ int main() {
 
 		} while(true);
 
-		/* CONFIRM CLOSE WINDOW */
+		// CONFIRM CLOSE WINDOW
 		char yesOrNo; // Holds the user's 'Y' and 'N' inputs
 
 		PrintHeader(3);
