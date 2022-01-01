@@ -10,4 +10,4 @@ This program is capable of performing the following conversions:
 * hexadecimal to octal
 * hexadecimal to decimal
 
-**Status:** Being Revised
+**Status:** Completed
