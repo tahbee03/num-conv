@@ -7,7 +7,6 @@ This program is capable of performing the following conversions:
 * base (2-9) to decimal
 * decimal to base (2-9)
 * decimal to hexadecimal
-* hexadecimal to octal
 * hexadecimal to decimal
 
 **Status:** Completed
