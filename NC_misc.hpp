@@ -8,13 +8,14 @@ FILE: NC_misc.hpp
 #define NC_MISC
 
 #include <iostream>
-#include <iomanip>
-#include <string>
+#include <iomanip> // setfill(), setw()
+#include <string> // string
+#include <cctype> // isdigit(), isxdigit()
 using namespace std;
 
-const int windowWidth = 50; // Sets the width of the "window" of the program. Used in FOR loops where "=" is printed
-const string wordList[] = {"", "", "Binary", "Ternary", "Quaternary", "Quinary", "Senary", "Septenary", "Octal", "Nonary", "Decimal",
-		                           "", "", "", "", "", "Hexadecimal"};
+const int windowWidth = 50; // Sets the width of the "window" of the program
+const string wordList[] = {"", "", "Binary", "Ternary", "Quaternary", "Quinary", "Senary", "Septenary", "Octal", 
+                           "Nonary", "Decimal", "", "", "", "", "", "Hexadecimal"};
 
 void PrintSeparator() {
 
@@ -59,6 +60,22 @@ void PrintHeader(int t, int sb = 0, int tb = 0) {
 			cout << endl;
 			PrintSeparator();
 	}
+
+}
+
+bool ValidInput(string num, int base) {
+
+	if(base == 16) {
+
+		for(int i = 0; i < num.size(); i++) { if(!isxdigit(num[i])) return false; }
+
+	} else {
+
+		for(int i = 0; i < num.size(); i++) { if(!isdigit(num[i]) || (num[i] - '0' >= base)) return false; }
+
+	}
+
+    return true;
 
 }
 
