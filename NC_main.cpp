@@ -5,10 +5,17 @@ FILE: NC_main.cpp
 */
 
 #include <iostream>
-#include <cctype> // isxdigit()
+#include <ios> // streamsize
+#include <limits> // numeric_limits
 #include "NC_functions.hpp" // BaseToDec(), DecToBase(), HexToDec(), DecToHex()
-#include "NC_misc.hpp" // windowWidth, wordList, PrintSeparator(), PrintHeader()
+#include "NC_misc.hpp" // windowWidth, wordList, PrintSeparator(), PrintHeader(), ValidInput()
 using namespace std;
+
+/*
+Input Stream Error Handling Sources:
+https://www.cplusplus.com/reference/istream/istream/ignore/
+https://www.tutorialspoint.com/what-is-the-use-of-cin-ignore-in-cplusplus
+*/
 
 int main() {
 
@@ -34,150 +41,97 @@ int main() {
 			}
 
 			cout << endl;
-			cout << "(Input any other value to exit the program.)" << endl;
+			cout << "(Input any other number to exit the program.)" << endl;
 			cout << "Enter number: ";
 			cin >> sourceBase;
+
+            while(cin.fail()) { // Handles the case where the user enters invalid input for sourceBase
+
+                cout << "Invalid input!" << endl;
+                cin.clear(); // Removes stream error
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clears stream buffer
+                cout << "Enter number: ";
+                cin >> sourceBase;
+
+            }
+
 			PrintSeparator(); // Prints the bottom row of the window
 			cout << endl << endl;
 
-			if(sourceBase >= 2 && sourceBase <= 9) { // For source number systems 2-9 (base 2-9)
+            if(!(sourceBase >= 2 && sourceBase <= 10) && !(sourceBase == 16)) break;
 
-				// TARGET NUMBER SYSTEM SELECTION
-				PrintHeader(1, sourceBase);
-				cout << endl;
-				cout << "Choose your target number system: " << endl;
-				cout << "(10) decimal" << endl;
-				cout << endl;
-				cout << "(Input any other value to exit the program.)" << endl;
-				cout << "Enter number: ";
-				cin >> targetBase;
-				PrintSeparator(); // Prints the bottom row of the window
-				cout << endl << endl;
+            // TARGET NUMBER SYSTEM SELECTION
+            PrintHeader(1, sourceBase);
+            cout << endl;
+            cout << "Choose your target number system: " << endl;
 
-				if(targetBase == 10) {
+            for(int i = 2; i <= 16; i++) { // Prints out the options for the target number system selection menu
 
-					// CONVERSION WINDOW
-					PrintHeader(2, sourceBase, targetBase);
-					cout << endl;
-					cout << "Input your number in source number system:" << endl;
-					cout << wordList[sourceBase] << ": ";
-					cin >> sourceNum;
-					targetNum = BasetoDec(sourceNum, sourceBase);
-					cout << "Decimal: " << targetNum << endl;
-					cout << "You will be returned to the main menu." << endl;
-					PrintSeparator(); // Prints the bottom row of the window
-					cout << endl << endl;
+                if(i == sourceBase) continue; // You cannot convert to the same number system
+                if(i >= 11 && i <= 15) continue; // Bases 11-15 are not used here, so they are not printed
+                cout << "(" << i << ") " << wordList[i] << endl;
 
-					// End of base(2-9) to decimal conversion
+            }
 
-				} else { // If user inputs an invalid number, they will be prompted to exit the program
+            cout << endl;
+            cout << "(Input any other number to exit the program.)" << endl;
+            cout << "Enter number: ";
+            cin >> targetBase;
 
-					break;
+            while(cin.fail() || sourceBase == targetBase) { // Handles the case where the user enters invalid input for targetBase
 
-				}
+                cout << "Invalid input!" << endl;
+                cin.clear(); // Removes stream error
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clears stream buffer
+                cout << "Enter number: ";
+                cin >> targetBase;
 
-			} else if(sourceBase == 10) { // For source number system 10 (decimal)
+            }
 
-				// TARGET NUMBER SYSTEM SELECTION
-				PrintHeader(1, sourceBase);
-				cout << endl;
-				cout << "Choose your target number system: " << endl;
+            PrintSeparator(); // Prints the bottom row of the window
+            cout << endl << endl;
 
-				for(int i = 2; i <= 16; i++) { // Prints out the options for the target number system selection menu
+            if(!(targetBase >= 2 && targetBase <= 10) && !(targetBase == 16)) break;
 
-					if (i >= 10 && i <= 15) continue; // Bases 10-15 are not used here, so they are not printed
-					cout << "(" << i << ") " << wordList[i] << endl;
+            // CONVERSION WINDOW
+            PrintHeader(2, sourceBase, targetBase);
+            cout << endl;
+            cout << "Input your number in source number system:" << endl;
+            cout << wordList[sourceBase] << ": ";
+            if(sourceBase == 16) cout << "0x";
+            cin >> sourceNum;
 
-				}
+            while(!ValidInput(sourceNum, sourceBase)) { // Handles the case where the user enters invalid input for sourceNum
 
-				cout << endl;
-				cout << "(Input any other value to exit the program.)" << endl;
-				cout << "Enter number: ";
-				cin >> targetBase;
-				PrintSeparator(); // Prints the bottom row of the window
-				cout << endl << endl;
+                cout << "Invalid input!" << endl;
+                cout << wordList[sourceBase] << ": ";
+                if(sourceBase == 16) cout << "0x";
+                cin >> sourceNum;
 
-			
-				if(targetBase >= 2 && targetBase <= 9) { // Decimal-to-base(2-9) conversion
-					
-					// CONVERSION WINDOW
-					PrintHeader(2, sourceBase, targetBase);
-					cout << endl;
-					cout << "Input your number in source number system:" << endl;
-					cout << "Decimal: ";
-					cin >> sourceNum;
-					targetNum = DectoBase(sourceNum, targetBase);
-					cout << wordList[targetBase] << ": " << targetNum << endl;
-					cout << "You will be returned to the main menu." << endl;
-					PrintSeparator(); // Prints the bottom row of the window
-					cout << endl << endl;
+            }
 
-					// End of decimal to base(2-9) conversion
-					
-				} else if(targetBase == 16) { // Decimal-to-hexadecimal conversion
+            if(sourceBase < 10) {
 
-					// CONVERSION WINDOW
-					PrintHeader(2, sourceBase, targetBase);
-					cout << endl;
-					cout << "Input your number in source number system:" << endl;
-					cout << "Decimal: ";
-					cin >> sourceNum;
-					targetNum = DectoHex(sourceNum);
-					cout << "Hexadecimal: " << targetNum << endl;
-					cout << "You will be returned to the main menu." << endl;
-					PrintSeparator(); // Prints the bottom row of the window
-					cout << endl << endl;
+                if(targetBase < 10) targetNum = DecToBase(BaseToDec(sourceNum, sourceBase), targetBase); // base 2-9 to base 2-9
+                else if(targetBase == 10) targetNum = BaseToDec(sourceNum, sourceBase); // base 2-9 to decimal
+                else if(targetBase == 16) targetNum = DecToHex(BaseToDec(sourceNum, sourceBase)); // base 2-9 to hexadecimal
 
-					// End of decimal to hexadecimal conversion
+            } else if(sourceBase == 10) {
 
-				} else { // If user inputs an invalid number, they will be prompted to exit the program
+                if(targetBase < 10) targetNum = DecToBase(sourceNum, targetBase); // decimal to base 2-9
+                else if(targetBase == 16) targetNum = DecToHex(sourceNum); // decimal to hexadecimal
 
-					break;
+            } else if(sourceBase == 16) {
 
-				}
+                if(targetBase < 10) targetNum = DecToBase(HexToDec(sourceNum), targetBase); // hexadecimal to base 2-9
+                else if(targetBase == 10) targetNum = HexToDec(sourceNum); // hexadecimal to decimal
 
-			} else if(sourceBase == 16) { // For source number system 16 (hexadecimal)
+            }
 
-				// TARGET NUMBER SYSTEM SELECTION
-				PrintHeader(1, sourceBase);
-				cout << endl;
-				cout << "Choose your target number system: " << endl;
-				// cout << "(8) octal" << endl;
-				cout << "(10) decimal" << endl;
-				cout << endl;
-				cout << "(Input any other value to exit the program.)" << endl;
-				cout << "Enter number: ";
-				cin >> targetBase;
-				PrintSeparator(); // Prints the bottom row of the window
-				cout << endl << endl;
-
-				if(targetBase == 10) { // Hexadecimal-to-decimal conversion
-
-					// CONVERSION WINDOW
-					PrintHeader(2, sourceBase, targetBase);
-					cout << endl;
-					cout << "Input your number in source number system:" << endl;
-					cout << "Hexadecimal: 0x";
-					cin >> sourceNum;
-					targetNum = HextoDec(sourceNum);
-					cout << "Decimal: " << targetNum << endl;
-					cout << "You will be returned to the main menu." << endl;
-					PrintSeparator(); // Prints the bottom row of the window
-					cout << endl << endl;
-
-					// End of hexadecimal to decimal conversion
-
-				} else { // If user inputs an invalid number, they will be prompted to exit the program
-
-					break;
-
-				}
-
-			} else { // If user inputs an invalid number, they will be prompted to exit the program
-
-				break;
-
-			}
+            cout << wordList[targetBase] << ": " << targetNum << endl;
+            cout << "You will be returned to the main menu." << endl;
+            PrintSeparator(); // Prints the bottom row of the window
+            cout << endl << endl;		
 
 		} while(true);
 
